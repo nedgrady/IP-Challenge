@@ -2,6 +2,7 @@ package com.example.nedgrady.ipchallenge;
 
 import android.content.res.AssetManager;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.support.v4.view.ViewGroupCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class Clue extends AppCompatActivity {
     private TextView userTextView;
     private EditText userEditText;
     private ImageView userImageView;
+    private TextView countDownTextView;
 
 
 
@@ -40,8 +42,18 @@ public class Clue extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+         new CountDownTimer(30000, 1000)     {
+            public void onTick(long millisUntilFinished) {
+                countDownTextView.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                countDownTextView.setText("Done");
+            }
+        }.start();
         setContentView(R.layout.activity_clue);
         userTextView = (TextView) findViewById(R.id.textView);
+        countDownTextView = (TextView) findViewById(R.id.textView2);
         userEditText = (EditText) findViewById(R.id.editText);
         userImageView = (ImageView) findViewById(R.id.imageView);
         currentLevelData = nextLevel();
