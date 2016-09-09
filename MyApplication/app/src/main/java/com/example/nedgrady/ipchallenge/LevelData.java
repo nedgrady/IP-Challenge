@@ -9,10 +9,7 @@ public class LevelData {
 	private int img;
 
 	public LevelData(int id) {
-		String line = "ans#hint"; // getLine(id);
-		String lines[] = line.split("#");
-		ans = lines[0];
-		hint = lines[1];
+		getLine(id); 
     	img = 1;
 	}
 
@@ -28,21 +25,25 @@ public class LevelData {
 		return img;
 	}
 
-/*	public getLine(int id) {
+	public void getLine(int id) {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("test.txt"))
-			String cLine;
-			boolean lineFound = false;
-			do 
+			BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+			String idLine;
+			String ansLine;
+			String hintLine;
+			boolean idFound = false;
+			while (((idLine = br.readLine()) != null) && (Integer.parseInt(idLine) != id)) 
 			{
-				idLine = br.readLine();
-				dataLine = br.readLine();
-				String = line.split
-			} while ();
-		    return "ans#hint";
+				br.readLine();
+				br.readLine();
+			}
+			if (Integer.parseInt(idLine) == id) {
+				ans = br.readLine();
+				hint = br.readLine();
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-	} */
+	}
 }
