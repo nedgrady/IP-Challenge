@@ -1,5 +1,4 @@
 package com.example.nedgrady.ipchallenge;
-
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
@@ -8,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -15,12 +15,9 @@ import android.widget.*;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
-
 public class Clue extends AppCompatActivity {
-
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -28,77 +25,67 @@ public class Clue extends AppCompatActivity {
     private GoogleApiClient client;
     private int currentLevel;
     private LevelData currentLevelData;
-
     public static final int MAX_LEVELS = 2;
-
     private TextView userTextView;
+    private TextView countDownTextView;
     private EditText userEditText;
     private ImageView userImageView;
-    private TextView countDownTextView;
-
-
-
+    private Button hintButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         new CountDownTimer(30000, 1000)     {
-            public void onTick(long millisUntilFinished) {
-                countDownTextView.setText("seconds remaining: " + millisUntilFinished / 1000);
-            }
-
-            public void onFinish() {
-                countDownTextView.setText("Done");
-            }
-        }.start();
         setContentView(R.layout.activity_clue);
         userTextView = (TextView) findViewById(R.id.textView);
         countDownTextView = (TextView) findViewById(R.id.textView2);
         userEditText = (EditText) findViewById(R.id.editText);
         userImageView = (ImageView) findViewById(R.id.imageView);
+        hintButton = (Button) findViewById(R.id.hintButton);
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                countDownTextView.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                countDownTextView.setText("done!");
+            }
+        }.start();
         currentLevelData = nextLevel();
         showLevel(currentLevelData);
         addActionListeners();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
-
     private LevelData nextLevel() {
-        Log.d("", "Getting the next level");
+        Log.d("", "Next Level!");
         //Get the level data: the image, the answer and the hint
         return new LevelData(++currentLevel, this);
     }
-
     private void onSubmit(TextView v){
-      getUserAnswer();
-      currentLevelData.getAnswer();
-        Log.d("action", "is " + getUserAnswer() + " " + currentLevelData.getAnswer());
-         if(getUserAnswer().equals(currentLevelData.getAnswer())){
-             if(currentLevel >= MAX_LEVELS){
-                 endGame();
-             }else {
-                 currentLevelData = nextLevel();
-                 showLevel(currentLevelData);
-             }
+        //Checking whether the user's answer is correct
+        Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
+        if(getUserAnswer().equals(currentLevelData.getAnswer())){
+            //If you've still got more levels to play, get the next level
+            if(currentLevel < MAX_LEVELS){
+                currentLevelData = nextLevel();
+                showLevel(currentLevelData);
+            } else
+                endGame();
         }
+        resetUI();
     }
-
     private void endGame() {
         userTextView.setText("Well Done");
     }
-
     /*
      *@param currentLevelData LevelData - the level to show to the screen.
      */
     private void showLevel(LevelData currentLevelData) {
-        resetUI();
         //Make image appear
         userImageView.setImageResource(currentLevelData.getImage());
-        //
     }
-
     private void resetUI(){
         userEditText.setText("");
     }
@@ -108,7 +95,6 @@ public class Clue extends AppCompatActivity {
     private String getUserAnswer(){
         return userEditText.getText().toString();
     }
-
     private void addActionListeners(){
         userEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -120,12 +106,19 @@ public class Clue extends AppCompatActivity {
                 return false;
             }
         });
+        hintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hintButtonClicked();
+            }
+        });
     }
-
+    private void hintButtonClicked() {
+        userTextView.setText(currentLevelData.getHint());
+    }
     @Override
     public void onStart() {
         super.onStart();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
@@ -141,11 +134,9 @@ public class Clue extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.start(client, viewAction);
     }
-
     @Override
     public void onStop() {
         super.onStop();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
