@@ -21,8 +21,10 @@ public class Clue extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    private int currentLevel=1;
+    private int currentLevel;
     private LevelData currentLevelData;
+
+    public static final int MAX_LEVELS = 2;
 
     private TextView userTextView;
     private EditText userEditText;
@@ -34,7 +36,8 @@ public class Clue extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         userTextView = (TextView) findViewById(R.id.textView);
         userEditText = (EditText) findViewById(R.id.editText);
-        nextLevel();
+        currentLevelData = nextLevel();
+        showLevel(currentLevelData);
         addActionListeners();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -44,20 +47,44 @@ public class Clue extends AppCompatActivity {
 
     private LevelData nextLevel() {
         //Get the level data: the image, the answer and the hint
-        return new LevelData(currentLevel++);
+        return new LevelData(++currentLevel);
     }
 
     private void onSubmit(TextView v){
-        if(getUserAnswer() == currentLevelData.getAnswer()){
-            currentLevelData = nextLevel();
+      // getUserAnswer();currentLevelData.getAnswer();
+         if(getUserAnswer().equals(currentLevelData.getAnswer())){
+
+             if(currentLevel >= MAX_LEVELS){
+                 endGame();
+             }else {
+                 currentLevelData = nextLevel();
+                 showLevel(currentLevelData);
+             }
         }
     }
 
+    private void endGame() {
+        userTextView.setText("Well Done");
+    }
+
+    /*
+     *@param currentLevelData LevelData - the level to show to the screen.
+     */
+    private void showLevel(LevelData currentLevelData) {
+        resetUI();
+        //Make image appear
+
+        //
+    }
+
+    private void resetUI(){
+        userEditText.setText("");
+    }
     /**
      * @return String - text that user has input into the answer TextView
      */
     private String getUserAnswer(){
-        return userTextView.getText().toString();
+        return userEditText.getText().toString();
     }
 
     private void addActionListeners(){
@@ -71,8 +98,8 @@ public class Clue extends AppCompatActivity {
                 return false;
             }
         });
-
     }
+
     @Override
     public void onStart() {
         super.onStart();
