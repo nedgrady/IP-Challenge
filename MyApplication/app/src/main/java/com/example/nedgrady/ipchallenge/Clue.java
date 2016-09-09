@@ -1,5 +1,6 @@
 package com.example.nedgrady.ipchallenge;
 
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.support.v4.view.ViewGroupCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,9 @@ import android.widget.*;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Clue extends AppCompatActivity {
 
@@ -30,10 +34,12 @@ public class Clue extends AppCompatActivity {
     private EditText userEditText;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_clue);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_clue);
         userTextView = (TextView) findViewById(R.id.textView);
         userEditText = (EditText) findViewById(R.id.editText);
         currentLevelData = nextLevel();
@@ -46,14 +52,16 @@ public class Clue extends AppCompatActivity {
     }
 
     private LevelData nextLevel() {
+        Log.d("", "Getting the next level");
         //Get the level data: the image, the answer and the hint
-        return new LevelData(++currentLevel);
+        return new LevelData(++currentLevel, this);
     }
 
     private void onSubmit(TextView v){
-      // getUserAnswer();currentLevelData.getAnswer();
+      getUserAnswer();
+      currentLevelData.getAnswer();
+        Log.d("action", "is " + getUserAnswer() + " " + currentLevelData.getAnswer());
          if(getUserAnswer().equals(currentLevelData.getAnswer())){
-
              if(currentLevel >= MAX_LEVELS){
                  endGame();
              }else {
