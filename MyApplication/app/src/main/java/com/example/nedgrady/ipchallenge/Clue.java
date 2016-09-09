@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class Clue extends AppCompatActivity {
     private TextView userTextView;
     private EditText userEditText;
     private ImageView userImageView;
+    private Button hintButton;
 
 
 
@@ -44,6 +46,7 @@ public class Clue extends AppCompatActivity {
         userTextView = (TextView) findViewById(R.id.textView);
         userEditText = (EditText) findViewById(R.id.editText);
         userImageView = (ImageView) findViewById(R.id.imageView);
+        hintButton = (Button) findViewById(R.id.hintButton);
         currentLevelData = nextLevel();
         showLevel(currentLevelData);
         addActionListeners();
@@ -108,6 +111,16 @@ public class Clue extends AppCompatActivity {
                 return false;
             }
         });
+        hintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hintButtonClicked();
+            }
+        });
+    }
+
+    private void hintButtonClicked() {
+        userTextView.setText(currentLevelData.getHint());
     }
 
     @Override
