@@ -54,23 +54,23 @@ public class Clue extends AppCompatActivity {
     }
 
     private LevelData nextLevel() {
-        Log.d("", "Getting the next level");
+        Log.d("", "Next Level!");
         //Get the level data: the image, the answer and the hint
         return new LevelData(++currentLevel, this);
     }
 
     private void onSubmit(TextView v){
-      getUserAnswer();
-      currentLevelData.getAnswer();
-        Log.d("action", "is " + getUserAnswer() + " " + currentLevelData.getAnswer());
-         if(getUserAnswer().equals(currentLevelData.getAnswer())){
-             if(currentLevel >= MAX_LEVELS){
+        //Checking whether the user's answer is correct
+        Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
+        if(getUserAnswer().equals(currentLevelData.getAnswer())){
+            //If you've still got more levels to play, get the next level
+            if(currentLevel < MAX_LEVELS){
+                currentLevelData = nextLevel();
+                showLevel(currentLevelData);
+            } else
                  endGame();
-             }else {
-                 currentLevelData = nextLevel();
-                 showLevel(currentLevelData);
-             }
         }
+        resetUI();
     }
 
     private void endGame() {
@@ -81,10 +81,8 @@ public class Clue extends AppCompatActivity {
      *@param currentLevelData LevelData - the level to show to the screen.
      */
     private void showLevel(LevelData currentLevelData) {
-        resetUI();
         //Make image appear
         userImageView.setImageResource(currentLevelData.getImage());
-        //
     }
 
     private void resetUI(){
