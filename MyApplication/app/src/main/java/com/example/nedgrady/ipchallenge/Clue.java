@@ -32,6 +32,7 @@ public class Clue extends AppCompatActivity {
 
     private TextView userTextView;
     private EditText userEditText;
+    private ImageView userImageView;
 
 
 
@@ -42,6 +43,7 @@ public class Clue extends AppCompatActivity {
         setContentView(R.layout.activity_clue);
         userTextView = (TextView) findViewById(R.id.textView);
         userEditText = (EditText) findViewById(R.id.editText);
+        userImageView = (ImageView) findViewById(R.id.imageView);
         currentLevelData = nextLevel();
         showLevel(currentLevelData);
         addActionListeners();
@@ -81,7 +83,7 @@ public class Clue extends AppCompatActivity {
     private void showLevel(LevelData currentLevelData) {
         resetUI();
         //Make image appear
-
+        userImageView.setImageResource(currentLevelData.getImage());
         //
     }
 

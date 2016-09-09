@@ -1,6 +1,7 @@
 package com.example.nedgrady.ipchallenge;
 import android.content.res.AssetManager;
 import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 
 public class LevelData {
 
@@ -15,17 +17,17 @@ public class LevelData {
 	private String hint;
 	private int img;
     private AssetManager am;
-    private boolean debug = true;
+    private boolean debug = false;
+
 	public LevelData(int id, AppCompatActivity app) {
         am = app.getApplicationContext().getAssets();
         if (!debug)
-          getLine(id);
+          getLine(id, app);
         else
         {
             ans = "ans";
             hint = "hint";
         }
-    	img = 1;
 	}
 
 	public String getAnswer() {
@@ -40,9 +42,9 @@ public class LevelData {
 		return img;
 	}
 
-	public void getLine(int id) {
+	public void getLine(int id, AppCompatActivity app) {
 		try {
-            Log.d("1", "1");
+			Log.d("DEBUG", "Opening test");
             InputStream in = am.open("test.txt");
             InputStreamReader isr = new InputStreamReader(in);
             BufferedReader br = new BufferedReader(isr);
@@ -55,9 +57,11 @@ public class LevelData {
 			{
 				br.readLine();
 				br.readLine();
+				br.readLine();
 			}
             Log.d("", "idLine is " + idLine + " and id is " + id);
 			if (Integer.parseInt(idLine) == id) {
+				img = app.getResources().getIdentifier(br.readLine(), "drawable", app.getPackageName());
 				ans = br.readLine();
 				hint = br.readLine();
                 Log.d("Debug", "Answer is " + ans + " and the hint is " + hint);
