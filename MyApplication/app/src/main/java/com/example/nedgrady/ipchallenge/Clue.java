@@ -199,10 +199,12 @@ public class Clue extends AppCompatActivity {
     }
 
     private void hintButtonTextClicked() {
+        scoreDown(100);
         hintText.setText(currentLevelData.getHint());
     }
 
     private void hintButtonZoomClicked() {
+        scoreDown(100);
         userImageView.setImageResource(currentLevelData.getImageHint());
     }
 
