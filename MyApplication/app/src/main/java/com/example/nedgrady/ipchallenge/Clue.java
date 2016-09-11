@@ -63,7 +63,6 @@ public class Clue extends AppCompatActivity {
         hintText.setTypeface(font);
         levelText.setTypeface(font);
         countDownTextView.setTypeface(font);
-        scoreText.setTypeface(font);
         inputField.setTypeface(font);
 
         // Get up the first level
@@ -72,17 +71,8 @@ public class Clue extends AppCompatActivity {
         correctBtn.setVisibility(View.INVISIBLE);
 
         // The time remaining
-        s = new CountDownTimer(MAX_TIME, 1000) {
-            public void onTick(long millisUntilFinished) {
-                seconds = millisUntilFinished / 1000;
-                countDownTextView.setText(Long.toString(seconds));
-                scoreDown(2);
-            }
-            public void onFinish() {
-                countDownTextView.setText("Times up!");
-            }
-        }.start();
 
+        startTimer();
         addActionListeners();
 
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -104,6 +94,20 @@ public class Clue extends AppCompatActivity {
      * they lose points and their answer gets removed from the input box.
      *
      */
+    private void startTimer() {
+        if (s != null)
+            s.cancel();
+        s = new CountDownTimer(MAX_TIME, 1000) {
+            public void onTick(long millisUntilFinished) {
+                seconds = millisUntilFinished / 1000;
+                countDownTextView.setText(Long.toString(seconds));
+                scoreDown(2);            }
+            public void onFinish() {
+                countDownTextView.setText("Times up!");
+            }
+        }.start();
+    }
+
     private void onSubmit(TextView v){
         Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
         if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
@@ -173,17 +177,7 @@ public class Clue extends AppCompatActivity {
         //Show next level
         currentLevelData = nextLevel();
         userImageView.setImageResource(currentLevelData.getImage());
-
-        //Reset the timer for the next level
-        s.cancel();
-        s = new CountDownTimer(MAX_TIME, 1000) {
-            public void onTick(long millisUntilFinished) {
-                countDownTextView.setText("Time :" + Long.toString(millisUntilFinished / 1000));
-            }
-            public void onFinish() {
-                countDownTextView.setText("Times up!");
-            }
-        }.start();
+        startTimer();
     }
 
     private void hintButtonTextClicked() {
@@ -201,11 +195,11 @@ public class Clue extends AppCompatActivity {
 
     private void scoreUp(long score){
         this.score += score;
-        scoreText.setText("Score: " + Long.toString(this.score));
+        scoreText.setText(Long.toString(this.score));
     }
 
     private void scoreDown(long score){
         this.score -= score;
-        scoreText.setText("Score: " + Long.toString(this.score));
+        scoreText.setText(Long.toString(this.score));
     }
 }
