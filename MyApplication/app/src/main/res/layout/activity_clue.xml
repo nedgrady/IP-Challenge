@@ -12,23 +12,23 @@
 
     <TextView
         android:id="@+id/level"
+        android:text="Level x"
         android:textColor="#000"
         android:textSize="32dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Level x"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:paddingTop="16dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/hintButtonText"
-        android:layout_below="@+id/level" />
+        android:layout_below="@+id/level"
+        android:layout_above="@+id/hint" />
 
     <EditText
         android:id="@+id/inputText"
@@ -49,39 +49,42 @@
         android:textColor="#000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/time"
+        android:layout_above="@+id/inputText"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/time"
-        android:layout_toStartOf="@+id/time" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/time"
         android:textColor="#000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/hintButtonText"
-        android:layout_alignBottom="@+id/hintButtonText"
-        android:layout_toLeftOf="@+id/hintButtonZoom" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/hintButtonText"
+        android:background="?android:selectableItemBackground"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/hint"
         android:layout_above="@+id/inputText"
+        android:layout_below="@+id/imageView"
+        android:layout_alignBottom="@+id/hintButtonZoom"
         android:layout_alignRight="@+id/imageView"
         android:layout_alignEnd="@+id/imageView" />
 
     <Button
         android:id="@+id/hintButtonZoom"
+        android:background="?android:selectableItemBackground"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/zoom_out"
         android:layout_above="@+id/inputText"
         android:layout_toLeftOf="@+id/hintButtonText"
-        android:layout_toStartOf="@+id/hintButtonText" />
+        android:layout_toStartOf="@+id/hintButtonText"
+        android:layout_below="@+id/imageView" />
 
 </RelativeLayout>

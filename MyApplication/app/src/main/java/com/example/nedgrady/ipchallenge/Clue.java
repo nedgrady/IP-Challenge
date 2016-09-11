@@ -50,11 +50,10 @@ public class Clue extends AppCompatActivity {
         hintButtonText = (Button) findViewById(R.id.hintButtonText);
         hintButtonZoom = (Button) findViewById(R.id.hintButtonZoom);
         //Set font
-        Typeface fancyFont= Typeface.createFromAsset(getAssets(),"fonts/jamscript.ttf");
-        hintText.setTypeface(fancyFont);
-        hintText.setTypeface(fancyFont);
-        Typeface numFont= Typeface.createFromAsset(getAssets(),"fonts/tradewinds.ttf");
-        countDownTextView.setTypeface(numFont);
+        Typeface font= Typeface.createFromAsset(getAssets(),"fonts/tradewinds.ttf");
+        hintText.setTypeface(font);
+        levelText.setTypeface(font);
+        countDownTextView.setTypeface(font);
 
         // The time remaining
         new CountDownTimer(30000, 1000) {
@@ -74,8 +73,9 @@ public class Clue extends AppCompatActivity {
     }
     private LevelData nextLevel() {
         Log.d("", "Next Level!");
+        levelText.setText("Level " + ++currentLevel);
         //Get the level data: the image, the answer and the hint
-        return new LevelData(++currentLevel, this);
+        return new LevelData(currentLevel, this);
     }
     private void onSubmit(TextView v){
         //Checking whether the user's answer is correct
