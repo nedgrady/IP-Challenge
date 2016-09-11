@@ -65,12 +65,26 @@
         android:layout_toStartOf="@+id/hintButtonText" />
 
     <Button
+        android:id="@+id/next"
+        android:background="?android:selectableItemBackground"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/next"
+        android:paddingTop="16dp"
+        android:layout_above="@+id/inputText"
+        android:layout_below="@+id/imageView"
+        android:layout_toLeftOf="@+id/hintButtonZoom"
+        android:layout_toStartOf="@+id/hintButtonZoom" />
+
+    <Button
         android:id="@+id/hintButtonText"
         android:background="?android:selectableItemBackground"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/hint"
+        android:paddingTop="16dp"
         android:layout_above="@+id/inputText"
         android:layout_below="@+id/imageView"
         android:layout_alignTop="@+id/hintButtonZoom"
