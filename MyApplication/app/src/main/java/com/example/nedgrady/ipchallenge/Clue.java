@@ -1,7 +1,8 @@
 package com.example.nedgrady.ipchallenge;
-
 import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.support.v4.view.ViewGroupCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,12 +16,9 @@ import android.widget.*;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
-
 public class Clue extends AppCompatActivity {
-
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -31,39 +29,54 @@ public class Clue extends AppCompatActivity {
 
     public static final int MAX_LEVELS = 4;
 
+    private TextView levelText;
     private TextView hintText;
-    private EditText userEditText;
+    private TextView countDownTextView;
+    private EditText inputField;
     private ImageView userImageView;
     private Button hintButtonText;
     private Button hintButtonZoom;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clue);
-        hintText = (TextView) findViewById(R.id.textView);
-        userEditText = (EditText) findViewById(R.id.editText);
+
+        levelText = (TextView) findViewById(R.id.level);
         userImageView = (ImageView) findViewById(R.id.imageView);
+        hintText = (TextView) findViewById(R.id.hint);
+        countDownTextView = (TextView) findViewById(R.id.time);
+        inputField = (EditText) findViewById(R.id.inputText);
         hintButtonText = (Button) findViewById(R.id.hintButtonText);
         hintButtonZoom = (Button) findViewById(R.id.hintButtonZoom);
+        //Set font
+        Typeface fancyFont= Typeface.createFromAsset(getAssets(),"fonts/jamscript.ttf");
+        hintText.setTypeface(fancyFont);
+        hintText.setTypeface(fancyFont);
+        Typeface numFont= Typeface.createFromAsset(getAssets(),"fonts/tradewinds.ttf");
+        countDownTextView.setTypeface(numFont);
+
+        // The time remaining
+        new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                countDownTextView.setText(Long.toString(millisUntilFinished / 1000));
+            }
+            public void onFinish() {
+                countDownTextView.setText("Times up!");
+            }
+        }.start();
         currentLevelData = nextLevel();
         showLevel(currentLevelData);
         addActionListeners();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
-
     private LevelData nextLevel() {
         Log.d("", "Next Level!");
         //Get the level data: the image, the answer and the hint
         return new LevelData(++currentLevel, this);
     }
-
     private void onSubmit(TextView v){
         //Checking whether the user's answer is correct
         Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
@@ -74,15 +87,13 @@ public class Clue extends AppCompatActivity {
                 currentLevelData = nextLevel();
                 showLevel(currentLevelData);
             } else
-                 endGame();
+                endGame();
         }
         resetUI();
     }
-
     private void endGame() {
         hintText.setText("Well Done");
     }
-
     /*
      *@param currentLevelData LevelData - the level to show to the screen.
      */
@@ -90,19 +101,17 @@ public class Clue extends AppCompatActivity {
         //Make image appear
         userImageView.setImageResource(currentLevelData.getImage());
     }
-
     private void resetUI(){
-        userEditText.setText("");
+        inputField.setText("");
     }
     /**
      * @return String - text that user has input into the answer TextView
      */
     private String getUserAnswer(){
-        return userEditText.getText().toString();
+        return inputField.getText().toString();
     }
-
     private void addActionListeners(){
-        userEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        inputField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 //if the tick button is clicked
@@ -133,11 +142,9 @@ public class Clue extends AppCompatActivity {
     private void hintButtonZoomClicked() {
         userImageView.setImageResource(currentLevelData.getImageHint());
     }
-
     @Override
     public void onStart() {
         super.onStart();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
@@ -153,11 +160,9 @@ public class Clue extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.start(client, viewAction);
     }
-
     @Override
     public void onStop() {
         super.onStop();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(

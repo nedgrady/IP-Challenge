@@ -63,14 +63,13 @@ public class LevelData {
 				br.readLine();
 				br.readLine();
 			}
-            Log.d("", "idLine is " + idLine + " and id is " + id);
 			if (Integer.parseInt(idLine) == id) {
 				imgName = br.readLine();
 				img = app.getResources().getIdentifier(imgName, "drawable", app.getPackageName());
 				imgHint = app.getResources().getIdentifier(imgName + "hint", "drawable", app.getPackageName());
 				ans = br.readLine();
 				hint = br.readLine();
-                Log.d("Debug", "Answer is " + ans + " and the hint is " + hint);
+                Log.d("Help", "Answer is " + ans + " and the hint is " + hint);
 			}
 		}
 		catch (IOException e) {
