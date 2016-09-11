@@ -36,6 +36,7 @@ public class Clue extends AppCompatActivity {
     private ImageView userImageView;
     private Button hintButtonText;
     private Button hintButtonZoom;
+    private CountDownTimer s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +55,10 @@ public class Clue extends AppCompatActivity {
         hintText.setTypeface(font);
         levelText.setTypeface(font);
         countDownTextView.setTypeface(font);
-
+        currentLevelData = nextLevel();
+        showLevel(currentLevelData);
         // The time remaining
-        new CountDownTimer(30000, 1000) {
+        s = new CountDownTimer(50000, 1000) {
             public void onTick(long millisUntilFinished) {
                 countDownTextView.setText(Long.toString(millisUntilFinished / 1000));
             }
@@ -64,8 +66,6 @@ public class Clue extends AppCompatActivity {
                 countDownTextView.setText("Times up!");
             }
         }.start();
-        currentLevelData = nextLevel();
-        showLevel(currentLevelData);
         addActionListeners();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -86,6 +86,15 @@ public class Clue extends AppCompatActivity {
                 hintText.setText("");
                 currentLevelData = nextLevel();
                 showLevel(currentLevelData);
+                s.cancel();
+                s = new CountDownTimer(50000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        countDownTextView.setText(Long.toString(millisUntilFinished / 1000));
+                    }
+                    public void onFinish() {
+                        countDownTextView.setText("Times up!");
+                    }
+                }.start();
             } else
                 endGame();
         }
