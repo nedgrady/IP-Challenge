@@ -1,4 +1,5 @@
 package com.example.nedgrady.ipchallenge;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.*;
 import com.google.android.gms.appindexing.Action;
@@ -120,6 +122,7 @@ public class Clue extends AppCompatActivity {
         if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
             scoreUp(seconds * 20);
             revealAnswer();
+
         } else {
             //Decrease score if you entered a wrong answer
             scoreDown(100);
@@ -176,6 +179,9 @@ public class Clue extends AppCompatActivity {
                 //Inactivate button
                 correctBtn.setVisibility(View.INVISIBLE);
                 if(currentLevel < MAX_LEVELS) {
+                    hintButtonZoom.setVisibility(View.VISIBLE);
+                    hintButtonText.setVisibility(View.VISIBLE);
+                    inputField.setVisibility(View.VISIBLE);
                     newLevel();
                 } else {
                     endGame();
@@ -203,6 +209,14 @@ public class Clue extends AppCompatActivity {
     private void revealAnswer() {
         s.cancel();
         userImageView.setImageResource(currentLevelData.getImageAns());
+        hintButtonZoom.setVisibility(View.INVISIBLE);
+        hintButtonText.setVisibility(View.INVISIBLE);
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        inputField.setVisibility(View.INVISIBLE);
         correctBtn.setVisibility(View.VISIBLE);
     }
 
