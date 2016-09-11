@@ -28,7 +28,7 @@ public class Clue extends AppCompatActivity {
     private LevelData currentLevelData;
 
     public static final int MAX_LEVELS = 4;
-
+    public static final long MAX_TIME = 1000 * 30; //second number is # of seconds
     private TextView levelText;
     private TextView hintText;
     private TextView countDownTextView;
@@ -36,6 +36,9 @@ public class Clue extends AppCompatActivity {
     private ImageView userImageView;
     private Button hintButtonText;
     private Button hintButtonZoom;
+    private long score;
+    private long seconds;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +57,13 @@ public class Clue extends AppCompatActivity {
         hintText.setTypeface(font);
         levelText.setTypeface(font);
         countDownTextView.setTypeface(font);
-
+        score = 100;
         // The time remaining
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
-                countDownTextView.setText(Long.toString(millisUntilFinished / 1000));
+                seconds = millisUntilFinished / 1000;
+                countDownTextView.setText(Long.toString(seconds));
+                score--;
             }
             public void onFinish() {
                 countDownTextView.setText("Times up!");
@@ -81,13 +86,18 @@ public class Clue extends AppCompatActivity {
         //Checking whether the user's answer is correct
         Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
         if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
+
+            score = seconds * 100;
             //If you've still got more levels to play, get the next level
             if(currentLevel < MAX_LEVELS){
                 hintText.setText("");
                 currentLevelData = nextLevel();
                 showLevel(currentLevelData);
-            } else
+            } else {
                 endGame();
+            }
+        }else{
+            score -= 100;
         }
         resetUI();
     }
