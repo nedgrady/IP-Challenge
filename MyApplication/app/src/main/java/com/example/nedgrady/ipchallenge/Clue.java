@@ -58,6 +58,8 @@ public class Clue extends AppCompatActivity {
         levelText.setTypeface(font);
         countDownTextView.setTypeface(font);
         score = 100;
+        inputField.setTypeface(font);
+
         // The time remaining
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
