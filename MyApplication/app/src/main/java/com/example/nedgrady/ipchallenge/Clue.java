@@ -28,7 +28,7 @@ public class Clue extends AppCompatActivity {
     private LevelData currentLevelData;
 
     public static final int MAX_LEVELS = 4;
-    public static final long MAX_TIME = 1000 * 30; //second number is # of seconds
+    public static final long MAX_TIME = 1000 * 50; //second number is # of seconds
     private TextView levelText;
     private TextView hintText;
     private TextView countDownTextView;
@@ -70,11 +70,11 @@ public class Clue extends AppCompatActivity {
 
 
         // The time remaining
-        s = new CountDownTimer(50000, 1000) {
+        s = new CountDownTimer(MAX_TIME, 1000) {
             public void onTick(long millisUntilFinished) {
                 seconds = millisUntilFinished / 1000;
                 countDownTextView.setText(Long.toString(seconds));
-                scoreDown(1);
+                scoreDown(2);
             }
             public void onFinish() {
                 countDownTextView.setText("Times up!");
@@ -109,7 +109,7 @@ public class Clue extends AppCompatActivity {
                 currentLevelData = nextLevel();
                 showLevel(currentLevelData);
                 s.cancel();
-                s = new CountDownTimer(50000, 1000) {
+                s = new CountDownTimer(MAX_TIME, 1000) {
                     public void onTick(long millisUntilFinished) {
                         countDownTextView.setText("Time :" + Long.toString(millisUntilFinished / 1000));
                     }
