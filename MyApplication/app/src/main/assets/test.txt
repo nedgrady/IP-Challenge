@@ -5,7 +5,7 @@ Thirsty?
 2
 b
 Dualit
-Want some food with that drink?
+Breakfast?
 3
 c
 Saddle Up
@@ -13,4 +13,4 @@ By the computers
 4
 d
 Force
-Don't get snookered on this one
+Don't get snookered here

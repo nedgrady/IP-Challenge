@@ -54,6 +54,7 @@ public class Clue extends AppCompatActivity {
         hintText.setTypeface(font);
         levelText.setTypeface(font);
         countDownTextView.setTypeface(font);
+        inputField.setTypeface(font);
 
         // The time remaining
         new CountDownTimer(30000, 1000) {
