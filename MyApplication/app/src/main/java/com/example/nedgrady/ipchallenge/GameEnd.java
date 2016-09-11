@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -28,10 +29,10 @@ public class GameEnd extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_end);
         TextView endMessage = (TextView) findViewById(R.id.textView);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/jamscript.ttf");
-        endMessage.setTypeface(custom_font);
+        Typeface font= Typeface.createFromAsset(getAssets(),"fonts/tradewinds.ttf");
+        endMessage.setTypeface(font);
         TextView scoreMessage = (TextView) findViewById(R.id.textView2);
-        scoreMessage.setTypeface(custom_font);
+        scoreMessage.setTypeface(font);
         Bundle extras = getIntent().getExtras();
         Boolean win = false;
         String score = "";
@@ -40,9 +41,9 @@ public class GameEnd extends AppCompatActivity {
             score = extras.getString("score");
         }
         if (win)
-            endMessage.setText("YOU WIN");
+            endMessage.setText("You Win!");
         else
-            endMessage.setText("OH NOOOOOOOOOOO");
+            endMessage.setText("You Lose!");
         scoreMessage.setText("Score: " + score);
     }
 }
