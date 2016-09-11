@@ -16,6 +16,8 @@ public class LevelData {
 	private String ans;	
 	private String hint;
 	private int img;
+	private int imgHint;
+	private String imgName;
     private AssetManager am;
     private boolean debug = false;
 
@@ -42,9 +44,12 @@ public class LevelData {
 		return img;
 	}
 
+	public int getImageHint() {
+		return imgHint;
+	}
+
 	public void getLine(int id, AppCompatActivity app) {
 		try {
-			Log.d("DEBUG", "Opening test");
             InputStream in = am.open("test.txt");
             InputStreamReader isr = new InputStreamReader(in);
             BufferedReader br = new BufferedReader(isr);
@@ -52,7 +57,6 @@ public class LevelData {
 			String ansLine;
 			String hintLine;
 			boolean idFound = false;
-            Log.d("", " and id is " + id);
 			while (((idLine = br.readLine()) != null) && (Integer.parseInt(idLine) != id)) 
 			{
 				br.readLine();
@@ -61,7 +65,9 @@ public class LevelData {
 			}
             Log.d("", "idLine is " + idLine + " and id is " + id);
 			if (Integer.parseInt(idLine) == id) {
-				img = app.getResources().getIdentifier(br.readLine(), "drawable", app.getPackageName());
+				imgName = br.readLine();
+				img = app.getResources().getIdentifier(imgName, "drawable", app.getPackageName());
+				imgHint = app.getResources().getIdentifier(imgName + "hint", "drawable", app.getPackageName());
 				ans = br.readLine();
 				hint = br.readLine();
                 Log.d("Debug", "Answer is " + ans + " and the hint is " + hint);

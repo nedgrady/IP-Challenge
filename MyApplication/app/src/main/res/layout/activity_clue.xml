@@ -15,7 +15,8 @@
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/hintButtonZoom" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -40,12 +41,23 @@
         android:layout_alignEnd="@+id/imageView" />
 
     <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hint"
-        android:id="@+id/hintButton"
+        android:id="@+id/hintButtonText"
         android:layout_above="@+id/textView"
+        android:drawableLeft="@drawable/hint"
         android:layout_alignRight="@+id/imageView"
-        android:layout_alignEnd="@+id/imageView" />
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignTop="@+id/hintButtonZoom" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hintButtonZoom"
+        android:layout_above="@+id/textView"
+        android:layout_toLeftOf="@+id/hintButtonText"
+        android:drawableLeft="@drawable/zoom_out"/>
 
 </RelativeLayout>

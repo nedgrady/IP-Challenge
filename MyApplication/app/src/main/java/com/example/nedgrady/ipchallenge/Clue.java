@@ -29,12 +29,13 @@ public class Clue extends AppCompatActivity {
     private int currentLevel;
     private LevelData currentLevelData;
 
-    public static final int MAX_LEVELS = 2;
+    public static final int MAX_LEVELS = 4;
 
-    private TextView userTextView;
+    private TextView hintText;
     private EditText userEditText;
     private ImageView userImageView;
-    private Button hintButton;
+    private Button hintButtonText;
+    private Button hintButtonZoom;
 
 
 
@@ -43,10 +44,11 @@ public class Clue extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clue);
-        userTextView = (TextView) findViewById(R.id.textView);
+        hintText = (TextView) findViewById(R.id.textView);
         userEditText = (EditText) findViewById(R.id.editText);
         userImageView = (ImageView) findViewById(R.id.imageView);
-        hintButton = (Button) findViewById(R.id.hintButton);
+        hintButtonText = (Button) findViewById(R.id.hintButtonText);
+        hintButtonZoom = (Button) findViewById(R.id.hintButtonZoom);
         currentLevelData = nextLevel();
         showLevel(currentLevelData);
         addActionListeners();
@@ -65,9 +67,10 @@ public class Clue extends AppCompatActivity {
     private void onSubmit(TextView v){
         //Checking whether the user's answer is correct
         Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
-        if(getUserAnswer().equals(currentLevelData.getAnswer())){
+        if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
             //If you've still got more levels to play, get the next level
             if(currentLevel < MAX_LEVELS){
+                hintText.setText("");
                 currentLevelData = nextLevel();
                 showLevel(currentLevelData);
             } else
@@ -77,7 +80,7 @@ public class Clue extends AppCompatActivity {
     }
 
     private void endGame() {
-        userTextView.setText("Well Done");
+        hintText.setText("Well Done");
     }
 
     /*
@@ -109,16 +112,26 @@ public class Clue extends AppCompatActivity {
                 return false;
             }
         });
-        hintButton.setOnClickListener(new View.OnClickListener() {
+        hintButtonText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hintButtonClicked();
+                hintButtonTextClicked();
+            }
+        });
+        hintButtonZoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hintButtonZoomClicked();
             }
         });
     }
 
-    private void hintButtonClicked() {
-        userTextView.setText(currentLevelData.getHint());
+    private void hintButtonTextClicked() {
+        hintText.setText(currentLevelData.getHint());
+    }
+
+    private void hintButtonZoomClicked() {
+        userImageView.setImageResource(currentLevelData.getImageHint());
     }
 
     @Override
