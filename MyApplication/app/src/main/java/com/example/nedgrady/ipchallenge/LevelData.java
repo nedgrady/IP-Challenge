@@ -17,6 +17,7 @@ public class LevelData {
 	private String hint;
 	private int img;
 	private int imgHint;
+	private int imgAns;
 	private String imgName;
     private AssetManager am;
     private boolean debug = false;
@@ -44,6 +45,10 @@ public class LevelData {
 		return img;
 	}
 
+	public int getImageAns() {
+		return imgAns;
+	}
+
 	public int getImageHint() {
 		return imgHint;
 	}
@@ -67,6 +72,7 @@ public class LevelData {
 				imgName = br.readLine();
 				img = app.getResources().getIdentifier(imgName, "drawable", app.getPackageName());
 				imgHint = app.getResources().getIdentifier(imgName + "hint", "drawable", app.getPackageName());
+				imgAns = app.getResources().getIdentifier(imgName + "ans", "drawable", app.getPackageName());
 				ans = br.readLine();
 				hint = br.readLine();
                 Log.d("Help", "Answer is " + ans + " and the hint is " + hint);

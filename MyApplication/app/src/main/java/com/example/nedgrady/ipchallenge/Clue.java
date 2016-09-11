@@ -61,6 +61,7 @@ public class Clue extends AppCompatActivity {
         hintText.setTypeface(font);
         levelText.setTypeface(font);
         countDownTextView.setTypeface(font);
+        scoreText.setTypeface(font);
         inputField.setTypeface(font);
 
         // Get up the first level
@@ -99,6 +100,9 @@ public class Clue extends AppCompatActivity {
         if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
             //Increase score
             scoreUp(seconds * 20);
+
+            revealAnswer();
+
             //If you've still got more levels to play, get the next level
             if(currentLevel < MAX_LEVELS){
                 hintText.setText("");
@@ -107,7 +111,7 @@ public class Clue extends AppCompatActivity {
                 s.cancel();
                 s = new CountDownTimer(50000, 1000) {
                     public void onTick(long millisUntilFinished) {
-                        countDownTextView.setText(Long.toString(millisUntilFinished / 1000));
+                        countDownTextView.setText("Time :" + Long.toString(millisUntilFinished / 1000));
                     }
                     public void onFinish() {
                         countDownTextView.setText("Times up!");
@@ -181,13 +185,17 @@ public class Clue extends AppCompatActivity {
         userImageView.setImageResource(currentLevelData.getImageHint());
     }
 
+    private void revealAnswer() {
+        userImageView.setImageResource(currentLevelData.getImageAns());
+    }
+
     private void scoreUp(long score){
         this.score += score;
-        scoreText.setText(Long.toString(this.score));
+        scoreText.setText("Score: " + Long.toString(this.score));
     }
 
     private void scoreDown(long score){
         this.score -= score;
-        scoreText.setText(Long.toString(this.score));
+        scoreText.setText("Score: " + Long.toString(this.score));
     }
 }
