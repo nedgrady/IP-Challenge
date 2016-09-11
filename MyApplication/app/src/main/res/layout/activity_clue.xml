@@ -90,4 +90,14 @@
         android:layout_toLeftOf="@+id/hintButtonText"
         android:layout_toStartOf="@+id/hintButtonText" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:id="@+id/scoreText"
+        android:layout_above="@+id/time"
+        android:layout_alignRight="@+id/time"
+        android:textColor="#000"
+         />
+
 </RelativeLayout>

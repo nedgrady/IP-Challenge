@@ -32,10 +32,12 @@ public class Clue extends AppCompatActivity {
     private TextView levelText;
     private TextView hintText;
     private TextView countDownTextView;
+    private TextView scoreText;
     private EditText inputField;
     private ImageView userImageView;
     private Button hintButtonText;
     private Button hintButtonZoom;
+
     private long score;
     private long seconds;
 
@@ -49,6 +51,7 @@ public class Clue extends AppCompatActivity {
         userImageView = (ImageView) findViewById(R.id.imageView);
         hintText = (TextView) findViewById(R.id.hint);
         countDownTextView = (TextView) findViewById(R.id.time);
+        scoreText = (TextView) findViewById(R.id.scoreText);
         inputField = (EditText) findViewById(R.id.inputText);
         hintButtonText = (Button) findViewById(R.id.hintButtonText);
         hintButtonZoom = (Button) findViewById(R.id.hintButtonZoom);
@@ -57,6 +60,7 @@ public class Clue extends AppCompatActivity {
         hintText.setTypeface(font);
         levelText.setTypeface(font);
         countDownTextView.setTypeface(font);
+
         score = 100;
         inputField.setTypeface(font);
 
@@ -65,7 +69,7 @@ public class Clue extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 seconds = millisUntilFinished / 1000;
                 countDownTextView.setText(Long.toString(seconds));
-                score--;
+                scoreDown(1);
             }
             public void onFinish() {
                 countDownTextView.setText("Times up!");
@@ -89,7 +93,7 @@ public class Clue extends AppCompatActivity {
         Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
         if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
 
-            score = seconds * 100;
+            scoreUp(seconds * 20);
             //If you've still got more levels to play, get the next level
             if(currentLevel < MAX_LEVELS){
                 hintText.setText("");
@@ -99,7 +103,7 @@ public class Clue extends AppCompatActivity {
                 endGame();
             }
         }else{
-            score -= 100;
+            scoreDown(100);
         }
         resetUI();
     }
@@ -153,6 +157,16 @@ public class Clue extends AppCompatActivity {
 
     private void hintButtonZoomClicked() {
         userImageView.setImageResource(currentLevelData.getImageHint());
+    }
+
+    private void scoreUp(long score){
+        this.score += score;
+        scoreText.setText(Long.toString(this.score));
+    }
+
+    private void scoreDown(long score){
+        this.score -= score;
+        scoreText.setText(Long.toString(this.score));
     }
     @Override
     public void onStart() {
