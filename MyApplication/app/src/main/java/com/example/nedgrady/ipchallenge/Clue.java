@@ -28,7 +28,7 @@ public class Clue extends AppCompatActivity {
     private LevelData currentLevelData;
 
     public static final int MAX_LEVELS = 4;
-
+    public static final long MAX_TIME = 1000 * 30; //second number is # of seconds
     private TextView levelText;
     private TextView hintText;
     private TextView countDownTextView;
@@ -37,6 +37,8 @@ public class Clue extends AppCompatActivity {
     private Button hintButtonText;
     private Button hintButtonZoom;
     private CountDownTimer s;
+    private long score;
+    private long seconds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +59,15 @@ public class Clue extends AppCompatActivity {
         countDownTextView.setTypeface(font);
         currentLevelData = nextLevel();
         showLevel(currentLevelData);
+        score = 100;
+        inputField.setTypeface(font);
+
         // The time remaining
         s = new CountDownTimer(50000, 1000) {
             public void onTick(long millisUntilFinished) {
-                countDownTextView.setText(Long.toString(millisUntilFinished / 1000));
+                seconds = millisUntilFinished / 1000;
+                countDownTextView.setText(Long.toString(seconds));
+                score--;
             }
             public void onFinish() {
                 countDownTextView.setText("Times up!");
@@ -81,6 +88,8 @@ public class Clue extends AppCompatActivity {
         //Checking whether the user's answer is correct
         Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
         if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
+
+            score = seconds * 100;
             //If you've still got more levels to play, get the next level
             if(currentLevel < MAX_LEVELS){
                 hintText.setText("");
@@ -95,8 +104,11 @@ public class Clue extends AppCompatActivity {
                         countDownTextView.setText("Times up!");
                     }
                 }.start();
-            } else
+            } else {
                 endGame();
+            }
+        }else{
+            score -= 100;
         }
         resetUI();
     }
