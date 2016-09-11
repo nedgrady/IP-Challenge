@@ -69,16 +69,7 @@ public class Clue extends AppCompatActivity {
 
 
         // The time remaining
-        s = new CountDownTimer(MAX_TIME, 1000) {
-            public void onTick(long millisUntilFinished) {
-                seconds = millisUntilFinished / 1000;
-                countDownTextView.setText(Long.toString(seconds));
-                scoreDown(2);
-            }
-            public void onFinish() {
-                countDownTextView.setText("Times up!");
-            }
-        }.start();
+        startTimer();
         addActionListeners();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -91,6 +82,19 @@ public class Clue extends AppCompatActivity {
         return new LevelData(currentLevel, this);
     }
 
+    private void startTimer() {
+        if (s != null)
+          s.cancel();
+        s = new CountDownTimer(MAX_TIME, 1000) {
+            public void onTick(long millisUntilFinished) {
+                seconds = millisUntilFinished / 1000;
+                countDownTextView.setText(Long.toString(seconds));
+                scoreDown(2);            }
+            public void onFinish() {
+                countDownTextView.setText("Times up!");
+            }
+        }.start();
+    }
 
     private void onSubmit(TextView v){
         //Checking whether the user's answer is correct
@@ -104,15 +108,7 @@ public class Clue extends AppCompatActivity {
                 hintText.setText("");
                 currentLevelData = nextLevel();
                 showLevel(currentLevelData);
-                s.cancel();
-                s = new CountDownTimer(MAX_TIME, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        countDownTextView.setText(Long.toString(millisUntilFinished / 1000));
-                    }
-                    public void onFinish() {
-                        countDownTextView.setText("Times up!");
-                    }
-                }.start();
+                startTimer();
             } else {
                 endGame();
             }
