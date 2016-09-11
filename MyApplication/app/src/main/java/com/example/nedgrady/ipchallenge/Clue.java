@@ -29,7 +29,7 @@ public class Clue extends AppCompatActivity {
     private LevelData currentLevelData;
 
     public static final int MAX_LEVELS = 4;
-    public static final long MAX_TIME = 1000 * 50; //second number is # of seconds
+    public static final long MAX_TIME = 1000 * 60; //second number is # of seconds
     private TextView levelText;
     private TextView hintText;
     private TextView countDownTextView;
@@ -128,7 +128,11 @@ public class Clue extends AppCompatActivity {
     }
 
     private void endGame() {
-        hintText.setText("Well Done");
+        s.cancel();
+        Intent i = new Intent(Clue.this, GameEnd.class);
+        i.putExtra("win", true);
+        i.putExtra("score", Long.toString(score));
+        startActivity(i);
     }
 
     //Clear the text that the user has entered
