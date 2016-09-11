@@ -182,6 +182,7 @@ public class Clue extends AppCompatActivity {
 
     private void newLevel() {
         //Show next level
+        hintText.setText("");
         currentLevelData = nextLevel();
         userImageView.setImageResource(currentLevelData.getImage());
         startTimer();
