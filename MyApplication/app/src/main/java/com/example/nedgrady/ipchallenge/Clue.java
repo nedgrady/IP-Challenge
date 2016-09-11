@@ -35,6 +35,7 @@ public class Clue extends AppCompatActivity {
     private TextView scoreText;
     private EditText inputField;
     private ImageView userImageView;
+    private Button correctBtn;
     private Button hintButtonText;
     private Button hintButtonZoom;
     private CountDownTimer s;
@@ -53,6 +54,7 @@ public class Clue extends AppCompatActivity {
         countDownTextView = (TextView) findViewById(R.id.time);
         scoreText = (TextView) findViewById(R.id.scoreText);
         inputField = (EditText) findViewById(R.id.inputText);
+        correctBtn = (Button) findViewById(R.id.correct);
         hintButtonText = (Button) findViewById(R.id.hintButtonText);
         hintButtonZoom = (Button) findViewById(R.id.hintButtonZoom);
 
@@ -66,8 +68,8 @@ public class Clue extends AppCompatActivity {
 
         // Get up the first level
         currentLevelData = nextLevel();
-        showLevel(currentLevelData);
-
+        userImageView.setImageResource(currentLevelData.getImage());
+        correctBtn.setVisibility(View.INVISIBLE);
 
         // The time remaining
         s = new CountDownTimer(MAX_TIME, 1000) {
@@ -80,10 +82,11 @@ public class Clue extends AppCompatActivity {
                 countDownTextView.setText("Times up!");
             }
         }.start();
+
         addActionListeners();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     //Get the image, the answer and the hint for the next level
@@ -92,35 +95,21 @@ public class Clue extends AppCompatActivity {
         return new LevelData(currentLevel, this);
     }
 
-
+    /*
+     *@param currentLevelData TextView - the input from the user.
+     *
+     * Check if the user has entered a correct answer
+     * If they have, then show them the original image and let them be able to
+     * get to the next level via a button that appears. If they entered a wrong score,
+     * they lose points and their answer gets removed from the input box.
+     *
+     */
     private void onSubmit(TextView v){
-        //Checking whether the user's answer is correct
         Log.d("action", "Checking if the users answer, '" + getUserAnswer() + "' is correct (" + currentLevelData.getAnswer()+ ")");
-
         if(getUserAnswer().toLowerCase().equals(currentLevelData.getAnswer().toLowerCase())){
-            //Increase score
             scoreUp(seconds * 20);
-
             revealAnswer();
-
-            //If you've still got more levels to play, get the next level
-            if(currentLevel < MAX_LEVELS){
-                hintText.setText("");
-                currentLevelData = nextLevel();
-                showLevel(currentLevelData);
-                s.cancel();
-                s = new CountDownTimer(MAX_TIME, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        countDownTextView.setText("Time :" + Long.toString(millisUntilFinished / 1000));
-                    }
-                    public void onFinish() {
-                        countDownTextView.setText("Times up!");
-                    }
-                }.start();
-            } else {
-                endGame();
-            }
-        }else{
+        } else {
             //Decrease score if you entered a wrong answer
             scoreDown(100);
         }
@@ -129,15 +118,6 @@ public class Clue extends AppCompatActivity {
 
     private void endGame() {
         hintText.setText("Well Done");
-    }
-
-    /*
-     *@param currentLevelData LevelData - the level to show to the screen.
-     *
-     * Make the image appear
-     */
-    private void showLevel(LevelData currentLevelData) {
-        userImageView.setImageResource(currentLevelData.getImage());
     }
 
     //Clear the text that the user has entered
@@ -175,6 +155,35 @@ public class Clue extends AppCompatActivity {
                 hintButtonZoomClicked();
             }
         });
+        correctBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Inactivate button
+                correctBtn.setVisibility(View.INVISIBLE);
+                if(currentLevel < MAX_LEVELS) {
+                    newLevel();
+                } else {
+                    endGame();
+                }
+            }
+        });
+    }
+
+    private void newLevel() {
+        //Show next level
+        currentLevelData = nextLevel();
+        userImageView.setImageResource(currentLevelData.getImage());
+
+        //Reset the timer for the next level
+        s.cancel();
+        s = new CountDownTimer(MAX_TIME, 1000) {
+            public void onTick(long millisUntilFinished) {
+                countDownTextView.setText("Time :" + Long.toString(millisUntilFinished / 1000));
+            }
+            public void onFinish() {
+                countDownTextView.setText("Times up!");
+            }
+        }.start();
     }
 
     private void hintButtonTextClicked() {
@@ -187,6 +196,7 @@ public class Clue extends AppCompatActivity {
 
     private void revealAnswer() {
         userImageView.setImageResource(currentLevelData.getImageAns());
+        correctBtn.setVisibility(View.VISIBLE);
     }
 
     private void scoreUp(long score){

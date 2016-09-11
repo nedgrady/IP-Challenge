@@ -65,12 +65,12 @@
         android:layout_toStartOf="@+id/hintButtonText" />
 
     <Button
-        android:id="@+id/next"
+        android:id="@+id/correct"
         android:background="?android:selectableItemBackground"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/next"
+        android:drawableLeft="@drawable/correct"
         android:paddingTop="16dp"
         android:layout_above="@+id/inputText"
         android:layout_below="@+id/imageView"
