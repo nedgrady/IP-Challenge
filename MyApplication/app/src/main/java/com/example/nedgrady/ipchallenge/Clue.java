@@ -40,7 +40,7 @@ public class Clue extends AppCompatActivity {
     private Button hintButtonText;
     private Button hintButtonZoom;
     private CountDownTimer s;
-    private long score = 100;
+    public long score = 100;
     private long seconds;
 
     @Override
@@ -103,12 +103,13 @@ public class Clue extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 seconds = millisUntilFinished / 1000;
                 countDownTextView.setText(Long.toString(seconds));
-                scoreDown(2);            }
+                scoreDown(2);
+            }
             public void onFinish() {
                 countDownTextView.setText("Times up!");
                 Intent i = new Intent(Clue.this, GameEnd.class);
                 i.putExtra("win", false);
-                i.putExtra("score", score);
+                i.putExtra("score", Long.toString(score));
                 startActivity(i);
             }
         }.start();
@@ -195,6 +196,7 @@ public class Clue extends AppCompatActivity {
     }
 
     private void revealAnswer() {
+        s.cancel();
         userImageView.setImageResource(currentLevelData.getImageAns());
         correctBtn.setVisibility(View.VISIBLE);
     }
